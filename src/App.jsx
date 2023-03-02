@@ -1,22 +1,33 @@
-import { controls, evalScope } from '@strudel.cycles/core';
-import { CodeMirror, useHighlighting, useKeydown, useStrudel, flash } from '@strudel.cycles/react';
-import { getAudioContext, initAudioOnFirstClick, panic, webaudioOutput } from '@strudel.cycles/webaudio';
-import { useCallback, useState } from 'react';
-import './style.css';
+import { controls, evalScope } from "@strudel.cycles/core";
+import {
+  CodeMirror,
+  useHighlighting,
+  useKeydown,
+  useStrudel,
+  flash,
+} from "@strudel.cycles/react";
+import {
+  getAudioContext,
+  initAudioOnFirstClick,
+  panic,
+  webaudioOutput,
+} from "@strudel.cycles/webaudio";
+import { useCallback, useState } from "react";
+import "./style.css";
 // import { prebake } from '../../../../../repl/src/prebake.mjs';
-import Sketch from 'react-p5';
+import Sketch from "react-p5";
 
 initAudioOnFirstClick();
 
 // TODO: only import stuff when play is pressed?
 evalScope(
   controls,
-  import('@strudel.cycles/core'),
-  import('@strudel.cycles/tonal'),
-  import('@strudel.cycles/mini'),
-  import('@strudel.cycles/xen'),
-  import('@strudel.cycles/webaudio'),
-  import('@strudel.cycles/osc'),
+  import("@strudel.cycles/core"),
+  import("@strudel.cycles/tonal"),
+  import("@strudel.cycles/mini"),
+  import("@strudel.cycles/xen"),
+  import("@strudel.cycles/webaudio"),
+  import("@strudel.cycles/osc")
 );
 
 const defaultTune = `samples('github:tidalcycles/Dirt-Samples/master/');
@@ -30,7 +41,16 @@ function App() {
   const [code, setCode] = useState(defaultTune);
   const [view, setView] = useState();
   // const [code, setCode] = useState(`"c3".note().slow(2)`);
-  const { scheduler, evaluate, schedulerError, evalError, isDirty, activeCode, pattern, started } = useStrudel({
+  const {
+    scheduler,
+    evaluate,
+    schedulerError,
+    evalError,
+    isDirty,
+    activeCode,
+    pattern,
+    started,
+  } = useStrudel({
     code,
     defaultOutput: webaudioOutput,
     getTime,
@@ -49,7 +69,7 @@ function App() {
   useHighlighting({
     view,
     pattern,
-    active: started && !activeCode?.includes('strudel disable-highlighting'),
+    active: started && !activeCode?.includes("strudel disable-highlighting"),
     getTime: () => scheduler.now(),
   });
 
@@ -58,7 +78,7 @@ function App() {
     useCallback(
       async (e) => {
         if (e.ctrlKey || e.altKey) {
-          if (e.code === 'Enter') {
+          if (e.code === "Enter") {
             e.preventDefault();
             flash(view);
             await evaluate(code);
@@ -70,15 +90,15 @@ function App() {
             if (!scheduler.started) {
               scheduler.start();
             }
-          } else if (e.code === 'Period') {
+          } else if (e.code === "Period") {
             scheduler.stop();
             panic();
             e.preventDefault();
           }
         }
       },
-      [scheduler, evaluate, view],
-    ),
+      [scheduler, evaluate, view]
+    )
   );
   return (
     <div>
@@ -97,10 +117,14 @@ function App() {
         </div>
         {error && <p>error {error.message}</p>}
       </nav>
-      <CodeMirror value={code} onChange={setCode} onViewChanged={setView} />
-      Ha!
-      <Sketch setup={setup} draw={draw} />
-      Hmm!
+      <div className="flex flex-row">
+        <div className="basis-2/3">
+          <CodeMirror value={code} onChange={setCode} onViewChanged={setView} />
+        </div>
+        <div className="basis-1/3">
+          <Sketch setup={setup} draw={draw} />
+        </div>
+      </div>
     </div>
   );
 }
