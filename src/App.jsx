@@ -117,7 +117,7 @@ function App() {
         </div>
         {error && <p>error {error.message}</p>}
       </nav>
-      <div className="flex flex-row">
+      <div className="w-full flex flex-row">
         <div className="basis-2/3">
           <CodeMirror value={code} onChange={setCode} onViewChanged={setView} />
         </div>
