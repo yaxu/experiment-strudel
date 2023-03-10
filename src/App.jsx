@@ -93,28 +93,28 @@ function App() {
     )
   );
   return (
-    <div>
-      <nav className="z-[12] w-full flex justify-center fixed bottom-0">
-        <div className="bg-slate-500 space-x-2 px-2 rounded-t-md">
-          <button
-            onClick={async () => {
-              await evaluate(code);
-              scheduler.start();
-            }}
-          >
-            start
-          </button>
-          <button onClick={() => scheduler.stop()}>stop</button>
-          {isDirty && <button onClick={() => evaluate(code)}>eval</button>}
-        </div>
-        {error && <p>error {error.message}</p>}
-      </nav>
-      <div className="w-full flex flex-row">
-        <div className="basis-2/3">
+    <div className="flex">
+      <div className="">
+        <Sketch preload={preload} setup={setup} draw={draw} mouseClicked={mouseClicked} mouseDragged={mouseDragged} />
+      </div>
+      <div className="">
+        <nav className="w-100">
+          <div className="">
+            <button
+              onClick={async () => {
+                await evaluate(code);
+                scheduler.start();
+              }}
+            >
+              start
+            </button>
+            <button onClick={() => scheduler.stop()}>stop</button>
+            {isDirty && <button onClick={() => evaluate(code)}>eval</button>}
+          </div>
+          {error && <p>error {error.message}</p>}
+        </nav>
+        <div className="w-100">
           <CodeMirror value={code} onChange={setCode} onViewChanged={setView} />
-        </div>
-        <div className="basis-1/3">
-          <Sketch preload={preload} setup={setup} draw={draw} mouseClicked={mouseClicked} mouseDragged={mouseDragged} />
         </div>
       </div>
     </div>

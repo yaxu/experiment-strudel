@@ -31,13 +31,13 @@ var sz = 200.0;
 var input, button, st;
 
 export function setup(p5, canvasParentRef) {
-  p5.createCanvas(sz, sz + 100);
+  p5.createCanvas(sz, sz + 100).parent(canvasParentRef);
   b = 240;
   for (var i = 0; i < p5.width; ++i) {
     ps.push(0.5);
   }
   input = p5.createInput(dweet_name);
-  input.position(20, sz + 100);
+  input.position(20, sz + p5.canvas.offsetTop + 10);
   button = p5.createButton("save");
   button.position(input.x, input.y + input.height + 2);
   button.mousePressed(saveline);
