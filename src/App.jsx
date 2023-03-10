@@ -17,6 +17,8 @@ import "./style.css";
 // import { prebake } from '../../../../../repl/src/prebake.mjs';
 import Sketch from "react-p5";
 
+import {preload, setup, draw, mouseClicked, mouseDragged} from "./draw-to-dweet.js"
+
 initAudioOnFirstClick();
 
 // TODO: only import stuff when play is pressed?
@@ -55,16 +57,6 @@ function App() {
     defaultOutput: webaudioOutput,
     getTime,
   });
-
-  const setup = (p5, canvasParentRef) => {
-    p5.createCanvas(500, 400).parent(canvasParentRef);
-  };
-
-  const draw = (p5) => {
-    p5.background(255, 130, 20);
-    p5.ellipse(100, 100, 100);
-    p5.ellipse(300, 100, 100);
-  };
 
   useHighlighting({
     view,
@@ -122,7 +114,7 @@ function App() {
           <CodeMirror value={code} onChange={setCode} onViewChanged={setView} />
         </div>
         <div className="basis-1/3">
-          <Sketch setup={setup} draw={draw} />
+          <Sketch preload={preload} setup={setup} draw={draw} mouseClicked={mouseClicked} mouseDragged={mouseDragged} />
         </div>
       </div>
     </div>
